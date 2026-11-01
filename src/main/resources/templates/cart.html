@@ -1,0 +1,18 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><title>SpringShop</title><style>body{font-family:sans-serif;max-width:900px;margin:auto;padding:16px}nav{display:flex;gap:16px;padding:12px 0;border-bottom:1px solid #ddd;margin-bottom:16px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}.card{border:1px solid #ddd;border-radius:8px;padding:12px}table{width:100%;border-collapse:collapse}td,th{padding:8px;border-bottom:1px solid #eee;text-align:left}input{padding:6px;margin:4px 0;width:100%;box-sizing:border-box}button{padding:6px 12px;cursor:pointer}</style></head><body><nav><b>🛒 SpringShop</b> <a href="/">Products</a> <a href="/cart">Cart (<span th:text="${cartCount}">0</span>)</a> <a href="/orders">Orders</a> <a href="/admin">Admin</a></nav>
+<h2>Your Cart</h2>
+<p th:if="${lines.empty}">Cart is empty.</p>
+<table th:unless="${lines.empty}">
+  <tr><th>Item</th><th>Qty</th><th>Subtotal</th><th></th></tr>
+  <tr th:each="l : ${lines}">
+    <td th:text="${l.product.name}"></td><td th:text="${l.qty}"></td>
+    <td>₹<span th:text="${#numbers.formatDecimal(l.subtotal,1,2)}"></span></td>
+    <td><form th:action="@{/cart/remove/{id}(id=${l.product.id})}" method="post"><button>Remove</button></form></td>
+  </tr>
+  <tr><td colspan="2"><b>Total</b></td><td colspan="2"><b>₹<span th:text="${#numbers.formatDecimal(total,1,2)}"></span></b></td></tr>
+</table>
+<form th:unless="${lines.empty}" action="/checkout" method="post">
+  <h3>Checkout</h3>
+  <input name="name" placeholder="Full name" required>
+  <input name="address" placeholder="Shipping address" required>
+  <button>Place Order</button>
+</form></body></html>

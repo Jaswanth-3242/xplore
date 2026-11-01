@@ -1,0 +1,15 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><title>SpringShop</title><style>body{font-family:sans-serif;max-width:900px;margin:auto;padding:16px}nav{display:flex;gap:16px;padding:12px 0;border-bottom:1px solid #ddd;margin-bottom:16px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}.card{border:1px solid #ddd;border-radius:8px;padding:12px}table{width:100%;border-collapse:collapse}td,th{padding:8px;border-bottom:1px solid #eee;text-align:left}input{padding:6px;margin:4px 0;width:100%;box-sizing:border-box}button{padding:6px 12px;cursor:pointer}</style></head><body><nav><b>🛒 SpringShop</b> <a href="/">Products</a> <a href="/cart">Cart (<span th:text="${cartCount}">0</span>)</a> <a href="/orders">Orders</a> <a href="/admin">Admin</a></nav>
+<h2>Admin – Manage Products</h2>
+<form action="/admin/products" method="post">
+  <input name="name" placeholder="Name" required>
+  <input name="description" placeholder="Description">
+  <input name="price" type="number" step="0.01" placeholder="Price" required>
+  <button>Add Product</button>
+</form>
+<table>
+  <tr><th>Name</th><th>Price</th><th></th></tr>
+  <tr th:each="p : ${products}">
+    <td th:text="${p.name}"></td><td th:text="${p.price}"></td>
+    <td><form th:action="@{/admin/products/{id}/delete(id=${p.id})}" method="post"><button>Delete</button></form></td>
+  </tr>
+</table></body></html>
